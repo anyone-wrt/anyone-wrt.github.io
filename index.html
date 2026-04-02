@@ -7,7 +7,7 @@
     <style>
         /* 这里是 CSS，负责美化 */
         body {
-            background-color: #f0f2f5; /* 换了一个更柔和的背景色 */
+            background-color: #f0f2f5; 
             background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             display: flex;
             justify-content: center;
@@ -23,12 +23,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
             max-width: 90%;
-            width: 550px;
+            width: 500px;
             margin: 20px;
         }
         h1 { 
             color: #1a73e8; 
             margin-top: 0;
+            font-size: 24px;
         }
         p {
             color: #5f6368;
@@ -45,46 +46,61 @@
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: transform 0.2s, background 0.3s;
         }
-        button:hover {
-            background: #1557b0;
+        button:active {
+            transform: scale(0.95);
         }
-        /* 图片美化 */
-        .preview-img {
+        /* 图片展示区域 */
+        .image-box {
             margin-top: 25px;
-            width: 100%;       /* 宽度占满卡片 */
-            max-width: 100%;   /* 确保不超出容器 */
-            height: auto;      /* 高度自动比例 */
-            border-radius: 12px; /* 给图片也加点圆角 */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            border: 1px dashed #ccc;
+            line-height: 0;
+        }
+        .preview-img {
+            width: 100%;       
+            height: auto;      
+            display: block;
+            transition: opacity 0.3s;
+        }
+        /* 图片没出来时的提示文字 */
+        .img-tip {
+            padding: 20px;
+            font-size: 14px;
+            color: #999;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h1>你好，世界！</h1>
-        <p>这是我亲手制作的第一个网页，欢迎来到我的空间。</p>
+        <h1>你好，欢迎来到我的网页</h1>
+        <p>这是我亲手制作并发布在 GitHub 上的第一个个人站点。</p>
         
         <div class="btn-container">
-            <button onclick="showMessage()">点我试试</button>
+            <button onclick="changeColor()">换个心情</button>
         </div>
 
-        <!-- 确保你的 GitHub 仓库里有 images 文件夹，且里面有 photo1.jpg -->
-        <img src="image/photo_1.jpg" alt="我的照片" class="preview-img">
+        <div class="image-box">
+            <!-- 检查点：确保仓库 images 文件夹下直接就是 photo1.jpg 文件 -->
+            <img src="image/photo_1.jpg" alt="加载中..." class="preview-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="img-tip" style="display:none;">
+                📷 图片暂时无法显示<br>
+                请检查仓库中 images 文件夹下是否有 photo1.jpg
+            </div>
+        </div>
     </div>
 
     <script>
-        function showMessage() {
-            // 使用更友好的方式代替 alert
-            console.log("按钮被点击了！");
-            const btn = document.querySelector('button');
-            btn.textContent = "感谢点击！";
-            setTimeout(() => {
-                btn.textContent = "点我试试";
-            }, 2000);
+        function changeColor() {
+            const colors = ['#f0f2f5', '#e3f2fd', '#f1f8e9', '#fff3e0', '#fce4ec'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.backgroundImage = 'none';
+            document.body.style.backgroundColor = randomColor;
         }
     </script>
 </body>
