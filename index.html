@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的第一个网页</title>
+    <style>
+        /* 这里是 CSS，负责美化 */
+        body {
+            background-color: gold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 { color: #0078d4; }
+        button {
+            padding: 10px 20px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>你好，世界！</h1>
+        <p>这是我亲手制作的第一个网页。</p>
+        <button onclick="alert('你点击了按钮！')">点我试试</button>
+    </div>
+
+</body>
+</html>
