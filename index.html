@@ -1,34 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的第一个网页</title>
     <style>
         /* 这里是 CSS，负责美化 */
         body {
-            background-color: gold;
+            background-color: #f0f2f5; /* 换了一个更柔和的背景色 */
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .card {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
+            max-width: 90%;
+            width: 550px;
+            margin: 20px;
         }
-        h1 { color: #0078d4; }
+        h1 { 
+            color: #1a73e8; 
+            margin-top: 0;
+        }
+        p {
+            color: #5f6368;
+            line-height: 1.6;
+        }
+        .btn-container {
+            margin: 20px 0;
+        }
         button {
-            padding: 10px 20px;
-            background: #0078d4;
+            padding: 12px 24px;
+            background: #1a73e8;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #1557b0;
+        }
+        /* 图片美化 */
+        .preview-img {
+            margin-top: 25px;
+            width: 100%;       /* 宽度占满卡片 */
+            max-width: 100%;   /* 确保不超出容器 */
+            height: auto;      /* 高度自动比例 */
+            border-radius: 12px; /* 给图片也加点圆角 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
         }
     </style>
 </head>
@@ -36,10 +66,26 @@
 
     <div class="card">
         <h1>你好，世界！</h1>
-        <p>这是我亲手制作的第一个网页。</p>
-        <button onclick="alert('你点击了按钮！')">点我试试</button>
-        <img src="images/photo1.jpg" alt=" Cure " width="500">
+        <p>这是我亲手制作的第一个网页，欢迎来到我的空间。</p>
+        
+        <div class="btn-container">
+            <button onclick="showMessage()">点我试试</button>
+        </div>
+
+        <!-- 确保你的 GitHub 仓库里有 images 文件夹，且里面有 photo1.jpg -->
+        <img src="images/photo1.jpg" alt="我的照片" class="preview-img">
     </div>
 
+    <script>
+        function showMessage() {
+            // 使用更友好的方式代替 alert
+            console.log("按钮被点击了！");
+            const btn = document.querySelector('button');
+            btn.textContent = "感谢点击！";
+            setTimeout(() => {
+                btn.textContent = "点我试试";
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
