@@ -3,104 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的第一个网页</title>
+    <title>VALORANT 战术匹配终端</title>
     <style>
-        /* 这里是 CSS，负责美化 */
+        :root {
+            --valo-red: #ff4655; /* VALORANT 主色 */
+            --valo-dark: #0f1923; /* 游戏暗色背景 */
+            --valo-white: #ece8e1; /* 游戏浅色文字/背景 */
+            --apple-blue: #0071e3;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
         body {
-            background-color: #f0f2f5; 
-            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f1923 0%, #1a2a3a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
         }
-        .card {
-            background: white;
+
+        /* 极简高级感容器 */
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 24px;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: var(--card-shadow);
+            width: 90%;
+            max-width: 850px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        /* 顶部装饰线 */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--valo-red);
+            border-radius: 0 0 4px 4px;
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--valo-red);
+            padding-left: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            margin: 0;
+            color: var(--valo-dark);
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: #86868b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* 战术信息网格 */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card-profile {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            padding: 25px;
             text-align: center;
-            max-width: 90%;
-            width: 500px;
-            margin: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        h1 { 
-            color: #1a73e8; 
-            margin-top: 0;
-            font-size: 24px;
+
+        .rank-icon {
+            width: 80px;
+            height: 80px;
+            background: #ddd; /* 模拟段位图标 */
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, #c0c0c0, #707070); /* 模拟白金段位 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        p {
-            color: #5f6368;
-            line-height: 1.6;
+
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
-        .btn-container {
-            margin: 20px 0;
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
         }
-        button {
-            padding: 12px 24px;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.3s;
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            background: #fff;
+            border-radius: 20px;
+            color: #555;
+            border: 1px solid #eee;
         }
-        button:active {
-            transform: scale(0.95);
+
+        /* 匹配筛选/状态 */
+        .match-status {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
-        /* 图片展示区域 */
-        .image-box {
-            margin-top: 25px;
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f5f5f7;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: #86868b;
+        }
+
+        .status-value {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--valo-dark);
+        }
+
+        /* 留言/申请 模块 */
+        .action-section {
+            background: rgba(15, 25, 35, 0.02);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .action-section h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #86868b;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
             border-radius: 12px;
-            overflow: hidden;
-            background-color: #f8f9fa;
-            border: 1px dashed #ccc;
-            line-height: 0;
+            border: 1px solid #d2d2d7;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 15px;
         }
-        .preview-img {
-            width: 100%;       
-            height: auto;      
-            display: block;
-            transition: opacity 0.3s;
+
+        textarea:focus {
+            border-color: var(--valo-red);
+            background: #fff;
         }
-        /* 图片没出来时的提示文字 */
-        .img-tip {
-            padding: 20px;
-            font-size: 14px;
-            color: #999;
-            line-height: 1.5;
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: var(--valo-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f5f5f7;
+            color: var(--valo-dark);
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: #86868b;
+        }
+
+        /* 实时日志系统 */
+        .logs {
+            margin-top: 25px;
+            font-family: "SF Mono", "Monaco", monospace;
+            font-size: 0.75rem;
+            color: #666;
+            background: rgba(0,0,0,0.02);
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .log-line {
+            margin-bottom: 4px;
+        }
+
+        .log-time { color: var(--valo-red); margin-right: 10px; }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: #86868b;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .container { padding: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>你好，欢迎来到我的网页</h1>
-        <p>这是我亲手制作并发布在 GitHub 上的第一个个人站点。</p>
-        
-        <div class="btn-container">
-            <button onclick="changeColor()">换个心情</button>
-        </div>
+    <div class="container">
+        <header>
+            <h1>TACTICAL MATCH // 战术搭子</h1>
+            <div class="subtitle">VALORANT 社交实验协议 v1.0.4</div>
+        </header>
 
-        <div class="image-box">
-            <!-- 检查点：确保仓库 images 文件夹下直接就是 photo1.jpg 文件 -->
-            <img src="image/photo_1.jpg" alt="加载中..." class="preview-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="img-tip" style="display:none;">
-                📷 图片暂时无法显示<br>
-                请检查仓库中 images 文件夹下是否有 photo1.jpg
+        <div class="grid">
+            <!-- 个人名片 -->
+            <div class="card-profile">
+                <div class="rank-icon">P3</div>
+                <div class="user-name">SageMain_#CN1</div>
+                <div class="subtitle" style="margin-bottom: 10px;">控场 / 哨兵专精</div>
+                <div class="tag-list">
+                    <span class="tag">#开麦</span>
+                    <span class="tag">#心态稳</span>
+                    <span class="tag">#晚间在线</span>
+                </div>
+            </div>
+
+            <!-- 匹配状态 -->
+            <div class="match-status">
+                <div class="status-item">
+                    <span class="status-label">当前寻队状态</span>
+                    <span class="status-value" style="color: var(--valo-red);">ACTIVE / 寻找中</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">目标段位区间</span>
+                    <span class="status-value">白金 I - 钻石 III</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">契合度评分</span>
+                    <span class="status-value">94.2%</span>
+                </div>
+                <button class="btn btn-secondary" onclick="refreshStatus()" style="width: 100%;">刷新匹配池</button>
             </div>
         </div>
+
+        <!-- 申请/留言区域 -->
+        <div class="action-section">
+            <h3>Send Request // 发送组队申请</h3>
+            <textarea id="msg-input" rows="3" placeholder="输入你的段位、擅长英雄及开黑宣言..."></textarea>
+            <div class="btn-group">
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="addLog('系统: 申请已取消')">取消</button>
+                    <button class="btn btn-primary" onclick="sendRequest()">发送战术申请</button>
+                </div>
+                <span class="hint">确认发送后将自动跳转至战术指挥频道 (KOOK)</span>
+            </div>
+        </div>
+
+        <!-- 科研感日志 -->
+        <div class="logs" id="log-box">
+            <div class="log-line"><span class="log-time">[09:41:02]</span> 系统就绪。等待玩家输入...</div>
+        </div>
+
+        <footer>
+            <span>PROJECT: VALO-MATE</span>
+            <span>DATA ENCRYPTED BY RIOT_PROTOCOL</span>
+        </footer>
     </div>
 
     <script>
-        function changeColor() {
-            const colors = ['#f0f2f5', '#e3f2fd', '#f1f8e9', '#fff3e0', '#fce4ec'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.style.backgroundImage = 'none';
-            document.body.style.backgroundColor = randomColor;
+        // 配置：在此处填入你的 KOOK 频道或群组邀请链接
+        const KOOK_LINK = "https://www.kookapp.cn/go/xxxxxx"; 
+
+        function addLog(text) {
+            const logBox = document.getElementById('log-box');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            line.innerHTML = `<span class="log-time">[${time}]</span> ${text}`;
+            logBox.insertBefore(line, logBox.firstChild);
+        }
+
+        function sendRequest() {
+            const input = document.getElementById('msg-input');
+            const message = input.value.trim();
+            
+            if(message === "") {
+                addLog("警告: 无法发送空申请。");
+                return;
+            }
+
+            addLog("正在通过加密通道同步战术宣言...");
+            
+            // 模拟发送过程
+            setTimeout(() => {
+                addLog("成功: 申请已存证 [ID: " + Math.floor(Math.random()*10000) + "]");
+                addLog("正在跳转至 KOOK 指挥中心...");
+                
+                // 延迟 1 秒后跳转，给用户看日志的时间
+                setTimeout(() => {
+                    // 在新窗口打开链接
+                    window.open(KOOK_LINK, '_blank');
+                    input.value = "";
+                }, 1000);
+
+            }, 800);
+        }
+
+        function refreshStatus() {
+            addLog("正在重新计算匹配契合度...");
+            setTimeout(() => {
+                addLog("匹配池更新完毕。发现 3 个潜在的高契合度搭子。");
+            }, 600);
         }
     </script>
 </body>
